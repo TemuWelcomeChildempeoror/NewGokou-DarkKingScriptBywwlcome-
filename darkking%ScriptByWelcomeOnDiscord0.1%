@@ -1,0 +1,816 @@
+-- Services
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+-- Local Player
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Color tweening function
+local function tweenColor(imageLabel, startColor, endColor, duration)
+    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
+    local tween = TweenService:Create(imageLabel, tweenInfo, {ImageColor3 = endColor})
+    tween:Play()
+end
+
+-- GUI and color adjustment function
+local function updateBarColor()
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+    if not screenGui then return end
+
+    local magicHealthFrame = screenGui:FindFirstChild("MagicHealth")
+    if not magicHealthFrame then return end
+
+    local healthFrame = magicHealthFrame:FindFirstChild("Health")
+    if not healthFrame then return end
+
+    local barFrame = healthFrame:FindFirstChild("Bar")
+    if not barFrame then return end
+
+    -- Remove the outline frame if it exists
+    local existingOutline = barFrame:FindFirstChild("OutlineFrame")
+    if existingOutline then
+        existingOutline:Destroy()
+    end
+
+    -- Create the bar inside the frame
+    local bar = barFrame:FindFirstChild("Bar")
+    if bar and bar:IsA("ImageLabel") then
+        -- Set initial color to white
+        bar.ImageColor3 = Color3.fromRGB(6, 57, 225)  -- Blue
+        -- Smooth transition from blue to blue
+        tweenColor(bar, Color3.fromRGB(6, 57, 225), Color3.fromRGB(0, 0, 255), 2)
+    end
+end
+
+-- Player setup
+local function onCharacterAdded()
+    updateBarColor()
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
+if player.Character then
+    onCharacterAdded()
+end
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "UIContainer"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local creditText = Instance.new("TextLabel")
+creditText.Size = UDim2.new(1, 0, 0, 20) -- size
+creditText.Position = UDim2.new(0, 0, 0, 0) -- Top
+creditText.BackgroundTransparency = 1 -- bg
+creditText.Text = "DARK KING BY WELCOME ON DISCORD"
+creditText.TextColor3 = Color3.new(1, 1, 1) --clr
+creditText.Font = Enum.Font.SourceSans
+creditText.TextScaled = true -- scale
+creditText.TextTransparency = 0.9 --opaque
+creditText.Parent = screenGui
+
+game.StarterGui:SetCore("SendNotification", {
+        Title = "Dark King By Welcome On Discord";
+        Text = " Made By Welcome On Discord";
+        Duration = 5;
+        Icon = "rbxassetid://1108382932"; -- image id if you don't wanna add it leave it like that
+})
+
+local ToolName = "Dark Night"
+local Animation = 18450698238
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()-- Simple domain expansion script
+-- Get HumanoidRootPart for position
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local position = character.HumanoidRootPart.Position
+-- CreatePart function
+local function createPart(position, size, color)
+    local part = Instance.new("Part")
+    part.Size = size
+    part.Position = position
+    part.Anchored = true
+    part.Material = Enum.Material.Neon
+    part.Color = color
+    part.Parent = workspace
+    return part
+end
+-- Domain sphere createHollowSphere function
+local function createHollowSphere(center, radius, color)
+    for x = -radius, radius do
+        for y = -radius, radius do
+            for z = -radius, radius do
+                local distance = (x^2 + y^2 + z^2)^(0.5)
+                if distance >= radius - 1 and distance <= radius then
+                    createPart(center + Vector3.new(x, y, z), Vector3.new(1, 1, 1), color)
+                end
+            end
+        end
+    end
+end
+-- Run the function
+createHollowSphere(position, 22.5, Color3.fromRGB(0, 0, 0))
+-- Floor for domain
+local floor = createPart(Vector3.new(position.X, position.Y - 0.5, position.Z), Vector3.new(45, 1, 45), Color3.fromRGB(0, 0, 0))
+-- Particle emitters for vfx (red and blue)
+local function createParticles()
+    for _, color in pairs({Color3.fromRGB(255, 0, 0), Color3.fromRGB(0, 0, 255)}) do
+        local particle = Instance.new("ParticleEmitter")
+        particle.Color = ColorSequence.new(color)
+        particle.Size = NumberSequence.new(1)
+        particle.Lifetime = NumberRange.new(1)
+        particle.Rate = 10
+        particle.Parent = floor
+    end
+end
+-- Run particle function
+createParticles()
+-- Play a sound
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://49896559" -- Ryoiki tenkai sound id
+sound.Volume = 1
+sound.Parent = workspace
+-- Play the sound
+sound:Play()
+-- Destroy domain and floor after 15 seconds
+wait(15)
+for _, child in pairs(workspace:GetChildren()) do
+    if child:IsA("Part") and child.Material == Enum.Material.Neon then
+        child:Destroy()
+    end
+end
+floor:Destroy()
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Right Arm"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Left Arm"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Right Leg"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Left Leg"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local spin1 = game.ReplicatedStorage.Resources.WhirlwindDrop["CharFX"].Spin:Clone()
+spin1.Parent = game.Players.LocalPlayer.Character["Torso"]
+    for _, child in ipairs(spin1:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(1) -- Emit 20 particles
+        end
+    end
+local wow1 = game.ReplicatedStorage.Resources.Dragon["Complete"].Part.Debri:Clone()
+wow1.Parent = game.Players.LocalPlayer.Character["Torso"]
+    for _, child in ipairs(wow1:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(1) -- Emit 20 particles
+        end
+    end
+local wind1 = game.ReplicatedStorage.Resources.Dragon["Stretch"].Part.Attachment:Clone()
+wind1.Parent = game.Players.LocalPlayer.Character["Torso"]
+    for _, child in ipairs(wind1:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(1) -- Emit 20 particles
+        end
+    end
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Right Arm")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+
+-- Example usage after your dash effect completes
+spawn(function()
+    -- Simulating end of dash effect
+    wait(0)  -- Adjust the wait time as needed
+
+    -- Enable all ParticleEmitters inside speedlinesandstuffClone
+    enableParticleEmitters(speedlinesandstuffClone)
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Left Arm")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+
+-- Example usage after your dash effect completes
+spawn(function()
+    -- Simulating end of dash effect
+    wait(0)  -- Adjust the wait time as needed
+
+    -- Enable all ParticleEmitters inside speedlinesandstuffClone
+    enableParticleEmitters(speedlinesandstuffClone)
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Right Leg")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+
+-- Example usage after your dash effect completes
+spawn(function()
+    -- Simulating end of dash effect
+    wait(0)  -- Adjust the wait time as needed
+
+    -- Enable all ParticleEmitters inside speedlinesandstuffClone
+    enableParticleEmitters(speedlinesandstuffClone)
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Left Leg")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local ToolName = "Abbysal Darkness"
+local Animation = 15334974550
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()loadstring(game:HttpGet("https://pastebin.com/raw/FrGmJDSk"))()
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://8592341295"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local ToolName = "Abbysal DarkWave"
+local Animation = 14406991505
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()loadstring(game:HttpGet("https://pastebin.com/raw/FrGmJDSk"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/NS3kWW3B"))()
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://3636730677"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local ToolName = "Dark Crush"
+local Animation = 12463072679
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://7007963665"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Right Arm"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Left Arm"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Right Leg"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local windtrail2 = game.ReplicatedStorage.Resources.HeadFirst["CharFX"].WindTrail:Clone()
+windtrail2.Parent = game.Players.LocalPlayer.Character["Left Leg"]
+    for _, child in ipairs(windtrail2:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(20) -- Emit 20 particles
+        end
+    end
+
+local spin1 = game.ReplicatedStorage.Resources.WhirlwindDrop["CharFX"].Spin:Clone()
+spin1.Parent = game.Players.LocalPlayer.Character["Torso"]
+    for _, child in ipairs(spin1:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(1) -- Emit 20 particles
+        end
+    end
+local wow1 = game.ReplicatedStorage.Resources.Dragon["Complete"].Part.Debri:Clone()
+wow1.Parent = game.Players.LocalPlayer.Character["Torso"]
+    for _, child in ipairs(wow1:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(1) -- Emit 20 particles
+        end
+    end
+local wind1 = game.ReplicatedStorage.Resources.Dragon["Stretch"].Part.Attachment:Clone()
+wind1.Parent = game.Players.LocalPlayer.Character["Torso"]
+    for _, child in ipairs(wind1:GetChildren()) do
+        if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+            child:Emit(1) -- Emit 20 particles
+        end
+    end
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Right Arm")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+
+-- Example usage after your dash effect completes
+spawn(function()
+    -- Simulating end of dash effect
+    wait(0)  -- Adjust the wait time as needed
+
+    -- Enable all ParticleEmitters inside speedlinesandstuffClone
+    enableParticleEmitters(speedlinesandstuffClone)
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Left Arm")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+
+-- Example usage after your dash effect completes
+spawn(function()
+    -- Simulating end of dash effect
+    wait(0)  -- Adjust the wait time as needed
+
+    -- Enable all ParticleEmitters inside speedlinesandstuffClone
+    enableParticleEmitters(speedlinesandstuffClone)
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Right Leg")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+
+-- Example usage after your dash effect completes
+spawn(function()
+    -- Simulating end of dash effect
+    wait(0)  -- Adjust the wait time as needed
+
+    -- Enable all ParticleEmitters inside speedlinesandstuffClone
+    enableParticleEmitters(speedlinesandstuffClone)
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Wait for the player to load
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Find the "Right Arm" part inside the player's character
+local rightArm = character:WaitForChild("Left Leg")
+if not rightArm then
+    error("Right Arm part not found in player character")
+end
+
+-- Check for Resources folder in ReplicatedStorage
+local resourcesFolder = ReplicatedStorage:WaitForChild("Resources")
+
+-- Check for KJEffects folder inside Resources
+local vanishingKickFolder = resourcesFolder:WaitForChild("VanishingKick")
+
+-- Check for speedlinesandstuff part inside KJEffects
+local speedlinesandstuffPart = vanishingKickFolder:WaitForChild("Trail2")
+
+-- Duplicate the speedlinesandstuff part
+local speedlinesandstuffClone = speedlinesandstuffPart:Clone()
+
+-- Put the duplicate in Workspace
+speedlinesandstuffClone.Parent = Workspace
+
+-- Set the position to the Right Arm initially
+speedlinesandstuffClone.CFrame = rightArm.CFrame
+
+-- Function to enable all ParticleEmitters
+local function enableParticleEmitters(parent)
+    for _, descendant in ipairs(parent:GetDescendants()) do
+        if descendant:IsA("ParticleEmitter") then
+            descendant.Enabled = true
+        end
+    end
+end
+
+-- Update the clone's position every frame
+RunService.RenderStepped:Connect(function()
+    if character and rightArm then
+        speedlinesandstuffClone.CFrame = rightArm.CFrame
+    end
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/FrGmJDSk"))()
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local ToolName = "Dark Energy"
+local Animation = 17292505729
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://3923230963"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+loadstring(game:HttpGet("https://pastebin.com/raw/fhq0hUmB"))()
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local ToolName = "Dark Cross"
+local Animation = 16525536622
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://8275560362"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+loadstring(game:HttpGet("https://pastebin.com/raw/fhq0hUmB"))()
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local plr = game.Players.LocalPlayer
+local gui = plr.PlayerGui
+local ulttext = gui.ScreenGui.MagicHealth.TextLabel
+
+ulttext.Text = "ABBYSAL ANDECY"
